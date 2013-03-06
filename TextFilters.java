@@ -15,8 +15,45 @@ public class TextFilters
 
     private static void cat(String[] args)
     {
-    
-        // FILL IN CODE HERE
+        InputStream in = null;
+    	boolean file = false;
+		String filename = "stdin";
+
+		if (args.length>0) {
+			for(int i=0; i<args.length; i++) {
+				filename=args[i];
+				try {
+					in = new FileInputStream(filename);
+					file=true;
+				} catch (FileNotFoundException e) {
+					System.err.println("cat error: file " + filename + " was not found. Exiting.");
+					
+					return;
+				} catch (SecurityException e) {
+					System.err.println("cat error: file " + filename + " could not be opened. Access was denied.");
+					return;
+				}
+				Scanner scan = new Scanner(in);
+
+				while(scan.hasNext()) 
+					System.out.println(scan.nextLine());
+			}
+		}
+
+		else { 
+			System.out.println("stdin");
+			//I'm not 100% sure what I'm supposed to do when args is empty.
+		}
+
+
+		if (file) {
+			try {
+				in.close();
+			} catch (IOException e) {
+				System.err.println("sort: error closing file " + filename);
+			}
+		}
+
         
     }
     
