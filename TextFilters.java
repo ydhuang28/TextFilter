@@ -210,22 +210,68 @@ public class TextFilters
     }
     
     
-    private static void uniq(String[] args)
-    {
+    private static void uniq(String[] args) {
     
-        // FILL IN CODE HERE
-    
-    }
+		InputStream in = null;			// input stream
+		boolean file = false;			// read from file?
+		String filename = null;			// default - no file name
+		
+		if (args.length > 0) {
+			if (args.length > 1) throw new IllegalArgumentException("uniq: Too many arguments");
+		
+			filename = args[0];
+			try {
+				file = true;
+				in = new FileInputStream(filename);
+			} catch (FileNotFoundException fife) {
+				System.err.println("uniq: cannot open file " + filename);
+				return;
+			} catch (SecurityException se) {
+				System.err.println("uniq: do not have permission to open " + filename);
+				return;
+			}
+		} else {
+			in = System.in;
+		}
+		
+		Scanner sc = new Scanner(in);
+		ArrayList<String> lines = new ArrayList<String>();
+		ArrayList<String> noRepLines = new ArrayList<String>();
+		while (sc.hasNextLine()) {
+			lines.add(sc.nextLine());
+		}
+		
+		for (int i = 0; i < lines.size() - 1; i++) {
+			String currLine = lines.get(i);
+			noRepLines.add(currLine);
+				while (lines.get(i+1).equals(currLine) {
+					i++;
+				}
+			}
+		}
+		
+		for (String line : noRepLines) {
+			System.out.println(line);
+		}
+		
+		if (file) {
+			try {
+				in.close();
+			} catch (IOException ioe) {
+				System.err.println("uniq: error closing file " + filename);
+			}
+		}
+		
+    } // end of uniq(String[])
     
     
     
     /**
      * Sorts a file or input from stdin in lexical order.
      *
-     * @param args arguments for sort
+     * @param args arguments given from the command line
      */
-    private static void sort(String[] args)
-    {
+    private static void sort(String[] args) {
     
         // This code was taken from Sort.java
     
@@ -286,7 +332,7 @@ public class TextFilters
             }
         }
     
-    }
+    } // end of sort(String[] args)
     
     
     /*************
@@ -297,10 +343,9 @@ public class TextFilters
     
     private static enum Filter {
         CAT, DIFF, GREP, SORT, TR, UNIQ
-    }
+    } // end of Filter
             
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
     
         PrintStream stdout = System.out;
         InputStream stdin = System.in;
@@ -398,5 +443,5 @@ public class TextFilters
             }
         }
         System.setIn(stdin);
-    }
-}
+    } // end of main(String[])
+} // end of TextFilters
