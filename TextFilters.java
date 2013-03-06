@@ -5,7 +5,6 @@
  * 		   Yuxin David Huang
  * 		   Colgate University
  */
-package colgate.cs102a.dhuang.textfilter;
 
 import java.io.*;
 import java.util.*;
@@ -66,12 +65,111 @@ public class TextFilters
     }
     
     
-    private static void grep(String[] args)
-    {
+    private static void grep(String[] args) {
     
-        // FILL IN CODE HERE
+        InputStream in = null;     // input stream
+        
+        boolean file = false;       // used for error-msg printing
+        String filename = null;     // default - no filename
+        
+        String target = null;       // default - no target to search for 
+        boolean countLine = false;  // default - do not count line numbers
+        
+        if (args.length > 0) {
+            
+            // check if the first argument is "-l" or the string to search for
+            if ("-l".equals(args[0])) {
+                countLine = true;
+                if (args.length < 2) throw new IllegalArgumentException("grep: Not enough arguments"); 
+            }
+            
+            if (countLine) {
+                
+                if (args.length > 1) {
+                    target = args[1];
+                }
+                
+                // use file instead of stdin if filename is provided
+                if (args.length > 2) {
+                    filename = args[2];
+                    try {
+                        in = new FileInputStream(filename);
+                        file = true;
+                    } catch (FileNotFoundException e) {
+                        System.err.print("sort: error, file ");
+                        System.err.print(filename);
+                        System.err.println(" not found or could not be opened");
+                        return;
+                    } catch (SecurityException e) {
+                        System.err.print("sort: error, access to file ");
+                        System.err.print(filename);
+                        System.err.println(" was denied");
+                        return;
+                    }
+                }
+                
+                if (args.length > 3) throw new IllegalArgumentException("grep: Too many arguments");
+                
+            } else {
+                target = args[0];
+                
+                // use file instead of stdin if filename is provided
+                if (args.length > 1) {
+                    filename = args[1];
+                    try {
+                        in = new FileInputStream(filename);
+                        file = true;
+                    } catch (FileNotFoundException e) {
+                        System.err.print("sort: error, file ");
+                        System.err.print(filename);
+                        System.err.println(" not found or could not be opened");
+                        return;
+                    } catch (SecurityException e) {
+                        System.err.print("sort: error, access to file ");
+                        System.err.print(filename);
+                        System.err.println(" was denied");
+                        return;
+                    }
+                }
+                
+                if (args.length > 2) throw new IllegalArgumentException("grep: Too many arguments");
+            }
+            
+            Scanner sc;
+            if (file) {
+                sc = new Scanner(in);
+            } else {
+                sc = new Scanner(System.in);
+            }
+            
+            int lineNum = 0;
+            while (sc.hasNextLine()) {
+                
+                String currLine = sc.nextLine();
+                if (currLine.contains(target)) {
+                    if (countLine) {
+                        System.out.println("{" + lineNum + "} " + currLine);
+                    } else {
+                        System.out.println(currLine);
+                    }
+                }
+                
+                lineNum++;
+            }
+            
+            // close the input stream
+            if (file) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    System.err.print("sort: error closing file ");
+                    System.err.println(filename);
+                }
+            }
+            
+        } else throw new IllegalArgumentException("grep: Not enough arguments");
     
-    }
+    } // end of grep(String[])
     
     
     private static void tr(String[] args)
