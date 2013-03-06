@@ -67,7 +67,7 @@ public class TextFilters
     
     private static void grep(String[] args) {
     
-        InputStream in = null;     // input stream
+        InputStream in = null;      // input stream
         
         boolean file = false;       // used for error-msg printing
         String filename = null;     // default - no filename
