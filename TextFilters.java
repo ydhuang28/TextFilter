@@ -235,23 +235,21 @@ public class TextFilters
 		}
 		
 		Scanner sc = new Scanner(in);
-		ArrayList<String> lines = new ArrayList<String>();
-		ArrayList<String> noRepLines = new ArrayList<String>();
+		String prevLine = "";
+		if (sc.hasNextLine()) {
+			prevLine = sc.nextLine();
+			System.out.println(prevLine);
+		}
+		
 		while (sc.hasNextLine()) {
-			lines.add(sc.nextLine());
-		}
-		
-		for (int i = 0; i < lines.size() - 1; i++) {
-			String currLine = lines.get(i);
-			noRepLines.add(currLine);
-				while (lines.get(i+1).equals(currLine) {
-					i++;
-				}
+			String currLine = sc.nextLine();
+			//System.out.println("prevLine = " + prevLine);
+			//System.out.println("currLine = " + currLine);
+			if (!currLine.equals(prevLine)) {
+				System.out.println(currLine);
+				prevLine = currLine;
+				
 			}
-		}
-		
-		for (String line : noRepLines) {
-			System.out.println(line);
 		}
 		
 		if (file) {
