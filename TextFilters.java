@@ -96,12 +96,12 @@ public class TextFilters
                         in = new FileInputStream(filename);
                         file = true;
                     } catch (FileNotFoundException e) {
-                        System.err.print("sort: error, file ");
+                        System.err.print("grep: error, file ");
                         System.err.print(filename);
                         System.err.println(" not found or could not be opened");
                         return;
                     } catch (SecurityException e) {
-                        System.err.print("sort: error, access to file ");
+                        System.err.print("grep: error, access to file ");
                         System.err.print(filename);
                         System.err.println(" was denied");
                         return;
@@ -120,12 +120,12 @@ public class TextFilters
                         in = new FileInputStream(filename);
                         file = true;
                     } catch (FileNotFoundException e) {
-                        System.err.print("sort: error, file ");
+                        System.err.print("grep: error, file ");
                         System.err.print(filename);
                         System.err.println(" not found or could not be opened");
                         return;
                     } catch (SecurityException e) {
-                        System.err.print("sort: error, access to file ");
+                        System.err.print("grep: error, access to file ");
                         System.err.print(filename);
                         System.err.println(" was denied");
                         return;
@@ -162,7 +162,7 @@ public class TextFilters
                 try {
                     in.close();
                 } catch (IOException e) {
-                    System.err.print("sort: error closing file ");
+                    System.err.print("grep: error closing file ");
                     System.err.println(filename);
                 }
             }
@@ -172,10 +172,40 @@ public class TextFilters
     } // end of grep(String[])
     
     
-    private static void tr(String[] args)
-    {
-    
-        // FILL IN CODE HERE
+    private static void tr(String[] args) {
+        
+        InputStream in = null;      // input stream
+        boolean file = false;       // used for error-msg printing
+        String filename = null;     // default - no filename
+        
+        if (args.length > 0) {
+            filename = args[0];
+            try {
+                in = new FileInputStream(filename);
+                file = true;
+            } catch (FileNotFoundException fife) {
+                System.err.print("tr: error, file ");
+                System.err.print(filename);
+                System.err.println(" not found or could not be opened");
+                return;
+            } catch (SecurityException se) {
+                System.err.print("tr: error, access to file ");
+                System.err.print(filename);
+                System.err.println(" was denied");
+                return;
+            }
+        } else {
+            in = System.in;
+        }
+        
+        Scanner sc = new Scanner(in);
+        while (sc.hasNextLine()) {
+            String currLine = sc.nextLine().trim();
+            String[] currWords = currLine.split(" ");
+            for (String word : currWords) {
+                System.out.println(word);
+            }
+        }
     
     }
     
@@ -187,18 +217,13 @@ public class TextFilters
     
     }
     
-    /***********************
-    
-     YOU SHOULD NOT HAVE TO MODIFY CODE BELOW THIS POINT
-     Feel free to look, though!
-     
-     ***********************/
     
     
-    /* This is an example of a filter that is already implemented.
-       Feel free to model your own code on it.
+    /**
+     * Sorts a file or input from stdin in lexical order.
+     *
+     * @param args arguments for sort
      */
-
     private static void sort(String[] args)
     {
     
