@@ -49,7 +49,7 @@ public class TextFilters
 			try {
 				in.close();
 			} catch (IOException e) {
-				System.err.println("sort: error closing file " + filename);
+				System.err.println("cat: error closing file " + filename);
 			}
 		}
 
