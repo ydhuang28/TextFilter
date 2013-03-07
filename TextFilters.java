@@ -56,9 +56,115 @@ public class TextFilters
 
     private static void diff(String[] args)
     {
+    	String file1 = ""; 
+		String file2 = "";
+		InputStream in1 =  null;
+		InputStream in2 = null;
+		boolean f1 = false;
+		boolean f2 = false;
 
-        // FILL IN CODE HERE
-    
+
+		if(args.length ==0) {
+			System.err.println("diff error: missing arguement after `diff'");
+			return;
+		}
+
+		if (args.length > 1) {
+			file1 += args[0];
+			file2 += args[1];
+			f1 = true;
+			f2 = true;
+		}
+
+		if(args.length == 1) {
+			System.err.println("diff error: missing input. Please type second filename.");
+			Scanner sc = new Scanner(System.in);
+			file1 += args[0]; 
+			file2 += sc.next();
+			f1 = true;
+			f2 = true;
+		}
+
+
+
+		try {
+			in1 = new FileInputStream(file1); 
+			f1 = true;
+		} catch (FileNotFoundException e) {
+			System.err.println("diff error: file " + file1 + " could not be found. Exiting.");
+			return;
+		} catch (SecurityException e) {
+			System.err.println("diff error: file " + file1 + " could not be opened. Access was denied.");
+			return;
+		}
+
+		try {
+			in2 = new FileInputStream(file2);
+		} catch (FileNotFoundException e) {
+			System.err.println("diff error: file " + file2 + " could not be found. Exiting.");
+			return;
+		} catch (SecurityException e) {
+			System.err.println("diff error: file " + file2 + " could not be opened. Access was denied.");
+			return;
+		}
+
+		Scanner scan1 = new Scanner(in1);
+		Scanner scan2 = new Scanner(in2);
+		boolean keep1 = false;
+		boolean keep2 = false;
+		String one = ""; 
+		String two = "";
+
+		while(scan1.hasNext() && scan2.hasNext()) {
+			//TODO: Fix weird algorithm glitches.
+
+			if (!keep1)
+				one = scan1.nextLine();
+
+			if (!keep2) 
+				two = scan2.nextLine();
+
+			if(one.compareTo(two) < 0)  {
+				System.out.println("- " + one);
+				keep1 = false; 
+				keep2 = true;
+			}
+
+			if(one.compareTo(two) > 0) {
+				System.out.println("+ " + two);
+				keep2 = false; 
+				keep1 = true;
+			}
+
+			if(one.compareTo(two) == 0) {
+				keep1= false;
+				keep2 = false;
+			}
+		}
+
+		while(scan1.hasNext())
+			System.out.println("- " + scan1.nextLine());
+
+		while(scan2.hasNext())
+			System.out.println("+ " + scan2.nextLine());
+
+
+
+		if (f1){
+			try {
+				in1.close();
+			} catch (IOException e) {
+				System.err.println("diff: error closing file " + file1);
+			}
+		}
+
+		if (f2){
+			try {
+				in1.close();
+			} catch (IOException e) {
+				System.err.println("diff: error closing file " + file2);
+			}
+		}
     }
     
     
