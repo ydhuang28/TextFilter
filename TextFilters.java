@@ -13,48 +13,45 @@ public class TextFilters
 {
 
     private static void cat(String[] args)
-    {
-        InputStream in = null;
-    	boolean file = false;
+	{
+		InputStream in = null;
+		boolean file = false;
 		String filename = "stdin";
+		Scanner scan;
 
-		if (args.length>0) {
-			for(int i=0; i<args.length; i++) {
-				filename=args[i];
-				try {
-					in = new FileInputStream(filename);
-					file=true;
-				} catch (FileNotFoundException e) {
-					System.err.println("cat error: file " + filename + " was not found. Exiting.");
-					
-					return;
-				} catch (SecurityException e) {
-					System.err.println("cat error: file " + filename + " could not be opened. Access was denied.");
-					return;
-				}
-				Scanner scan = new Scanner(in);
+		if (args.length==0) {
+			scan = new Scanner(System.in);
+			System.out.print(scan.nextLine());
+		}
 
-				while(scan.hasNext()) 
-					System.out.println(scan.nextLine());
+		for(int i=0; i<args.length; i++) {
+			filename=args[i];
+			try {
+				in = new FileInputStream(filename);
+				file=true;
+			} catch (FileNotFoundException e) {
+				System.err.println("cat error: file " + filename + " was not found. Exiting.");
+
+				return;
+			} catch (SecurityException e) {
+				System.err.println("cat error: file " + filename + " could not be opened. Access was denied.");
+				return;
 			}
-		}
+			scan = new Scanner(in);
 
-		else { 
-			System.out.println("stdin");
-			//I'm not 100% sure what I'm supposed to do when args is empty.
+			while(scan.hasNext()) 
+				System.out.println(scan.nextLine());
 		}
-
 
 		if (file) {
 			try {
 				in.close();
 			} catch (IOException e) {
-				System.err.println("cat: error closing file " + filename);
+				System.err.println("sort: error closing file " + filename);
 			}
 		}
 
-        
-    }
+	}
     
 
     private static void diff(String[] args)
