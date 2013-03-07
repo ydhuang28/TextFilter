@@ -243,8 +243,6 @@ public class TextFilters
 		
 		while (sc.hasNextLine()) {
 			String currLine = sc.nextLine();
-			//System.out.println("prevLine = " + prevLine);
-			//System.out.println("currLine = " + currLine);
 			if (!currLine.equals(prevLine)) {
 				System.out.println(currLine);
 				prevLine = currLine;
