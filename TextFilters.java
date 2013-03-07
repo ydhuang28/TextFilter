@@ -207,7 +207,7 @@ public class TextFilters
             }
         }
     
-    }
+    } // end of tr(String[])
     
     
     private static void uniq(String[] args) {
